@@ -1,0 +1,62 @@
+kind: Deployment
+apiVersion: apps/v1beta1
+metadata:
+  name: node
+  labels:
+    component: node
+spec:
+  replicas: 1
+  selector: 
+    matchLabels:
+      component: node
+  template:
+    metadata:
+      labels:
+        component: node
+    spec:
+      containers:
+        - name: node
+          image: ethereum/client-go:alltools-v1.7.3
+          ports: 
+           - containerPort: 8545
+             name: rpc
+           - containerPort: 30303
+             name: discovery-tcp
+             protocol: TCP
+           - containerPort: 30303
+             name: discovery-udp
+             protocol: UDP
+          command: # Using /bin/sh as a workaround to get HOSTNAME. See https://github.com/kubernetes/kubernetes/issues/57726
+           - "/bin/sh"
+           - "-c"
+           - >
+               geth 
+               --networkid=1000
+               --bootnodes=enode://1053a385b3dddb3c96054932d02af2fd87e918df565d615b5035d77defce0860f012292f10c18d5c1cd4f3c4acd6bc2051336024d545b2de055b935afcce9e7b@$(BOOTNODE_SERVICE_HOST):30301
+               --ethstats=$HOSTNAME:secret@ethstats.default.svc.cluster.local:3000
+               --rpc
+               --rpcaddr=0.0.0.0
+               --rpccorsdomain=\"*\"
+               --datadir=/ethereum
+               --debug
+               --verbosity=4
+          volumeMounts:
+            - name: chaindata
+              mountPath: "/ethereum"
+      initContainers:
+        - name: genesis
+          image: ethereum/client-go:alltools-v1.7.3
+          command: ["geth"]
+          args: ["--datadir=/ethereum", "init", "/tmp/genesis.json"]
+          volumeMounts:
+            - name: genesis
+              mountPath: "/tmp"
+              readOnly: true
+            - name: chaindata
+              mountPath: "/ethereum"
+      volumes:
+        - name: genesis
+          secret: 
+            secretName: genesis
+        - name: chaindata
+          emptyDir: {}
