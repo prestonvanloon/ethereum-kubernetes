@@ -94,4 +94,8 @@ kubectl scale deployment node --replicas=8
 - Add a job to simulate transactions
 - Add an all-in-one script
 
+## Notes
 
+The resource limit for the miner is relatively low, this means it will take ~20 minutes
+to generate the DAG. Change those values in the yaml file if you'd like to spend more
+resources mining. 
