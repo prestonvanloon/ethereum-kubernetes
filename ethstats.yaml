@@ -25,6 +25,13 @@ spec:
           env:
             - name: WS_SECRET
               value: secret
+          resources:
+            requests:
+              cpu: "25m"
+              memory: "150Mi"
+            limits:
+              cpu: "75m"
+              memory: "500Mi"
 ---
 kind: Service
 apiVersion: v1

@@ -37,6 +37,13 @@ spec:
             - name: bootkey
               mountPath: "/opt/bootnode"
               readOnly: true
+          resources:
+            requests:
+              cpu: "10m"
+              memory: "50Mi"
+            limits:
+              cpu: "50m"
+              memory: "250Mi"
       volumes:
         - name: bootkey
           secret:

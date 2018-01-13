@@ -31,18 +31,28 @@ spec:
            - "-c"
            - > 
               geth
-                --networkid=1000
-                --bootnodes=enode://2e1903503c4b0994ea7610d40e615b9c688b6922ecc01be8b94cca2385f2ab99a133c19d36e7f230e719c1da0913d49924b5568153c161d38d8aa2f7ca764eb3@$(BOOTNODE_SERVICE_HOST):30301
-                --ethstats=$HOSTNAME:secret@ethstats.default.svc.cluster.local:3000
-                --mine
-                --etherbase=0x52da7d2e28708b1796bd15236a7aad69944fe724
-                --rpc
-                --rpcaddr=0.0.0.0
-                --datadir=/ethereum
-                --ethash.dagdir=/dag
+              --networkid=1000
+              --bootnodes=enode://2e1903503c4b0994ea7610d40e615b9c688b6922ecc01be8b94cca2385f2ab99a133c19d36e7f230e719c1da0913d49924b5568153c161d38d8aa2f7ca764eb3@$(BOOTNODE_SERVICE_HOST):30301
+              --ethstats=$HOSTNAME:secret@ethstats.default.svc.cluster.local:3000
+              --mine
+              --minerthreads 1
+              --etherbase=0xf71E9C766Cdf169eDFbE2749490943C1DC6b8A55
+              --rpc
+              --rpcaddr=0.0.0.0
+              --datadir=/ethereum
+              --ethash.dagdir=/dag
+              --identity=$HOSTNAME
           volumeMounts:
             - name: chaindata
               mountPath: "/ethereum"
+          resources:
+            requests:
+              cpu: "400m"
+              memory: "1Gi"
+            limits:
+              cpu: "500m"
+              memory: "2Gi"
+
       initContainers:
         - name: genesis
           image: ethereum/client-go:alltools-v1.7.3

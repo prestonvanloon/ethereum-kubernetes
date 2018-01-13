@@ -40,9 +40,17 @@ spec:
                --datadir=/ethereum
                --debug
                --verbosity=4
+               --identity=$HOSTNAME
           volumeMounts:
             - name: chaindata
               mountPath: "/ethereum"
+          resources:
+            requests:
+              cpu: "25m"
+              memory: "50Mi"
+            limits:
+              cpu: "100m"
+              memory: "500Mi"
       initContainers:
         - name: genesis
           image: ethereum/client-go:alltools-v1.7.3
