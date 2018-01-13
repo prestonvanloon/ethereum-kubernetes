@@ -32,7 +32,7 @@ spec:
            - > 
               geth
                 --networkid=1000
-                --bootnodes=enode://1053a385b3dddb3c96054932d02af2fd87e918df565d615b5035d77defce0860f012292f10c18d5c1cd4f3c4acd6bc2051336024d545b2de055b935afcce9e7b@$(BOOTNODE_SERVICE_HOST):30301
+                --bootnodes=enode://2e1903503c4b0994ea7610d40e615b9c688b6922ecc01be8b94cca2385f2ab99a133c19d36e7f230e719c1da0913d49924b5568153c161d38d8aa2f7ca764eb3@$(BOOTNODE_SERVICE_HOST):30301
                 --ethstats=$HOSTNAME:secret@ethstats.default.svc.cluster.local:3000
                 --mine
                 --etherbase=0x52da7d2e28708b1796bd15236a7aad69944fe724
